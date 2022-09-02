@@ -18,12 +18,14 @@ const (
 	FlagCaseNum0 = iota
 	FlagCaseNum1
 	FlagCaseNum2
+	FlagCaseNum3
 )
 
 var FlagCaseNumUsageMap = map[int]string{
 	FlagCaseNum0: "Hello World !",
 	FlagCaseNum1: "获取环境变量",
 	FlagCaseNum2: "执行命令",
+	FlagCaseNum3: "etcd使用",
 }
 
 type FlagTypeCaseNum struct {
