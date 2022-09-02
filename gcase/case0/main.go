@@ -1,7 +1,7 @@
 package case0
 
-import "fmt"
+import "log"
 
 func Do() {
-	fmt.Println("Hello World !")
+	log.Println("Hello World !")
 }

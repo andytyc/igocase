@@ -2,7 +2,7 @@ package case2
 
 import (
 	"bytes"
-	"fmt"
+	"log"
 	"os/exec"
 )
 
@@ -13,9 +13,9 @@ func Do() {
 	cmd.Stderr = &stderr // 标准错误
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("cmd run err:", cmd.Args, err)
+		log.Println("cmd run err:", cmd.Args, err)
 		return
 	}
-	fmt.Println("out :", string(stdout.Bytes()))
-	fmt.Println("outerr :", string(stderr.Bytes()))
+	log.Println("out :", string(stdout.Bytes()))
+	log.Println("outerr :", string(stderr.Bytes()))
 }

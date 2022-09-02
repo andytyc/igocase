@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 
 	"github.com/andytyc/igocase/conf"
 	"github.com/andytyc/igocase/gcase"
@@ -16,5 +17,6 @@ func init() {
 
 func main() {
 	gcase.Do()
-	<-utils.NotifySignal()
+	sig := <-utils.NotifySignal()
+	log.Println("退出 :", sig)
 }

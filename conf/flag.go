@@ -1,7 +1,7 @@
 package conf
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -19,13 +19,15 @@ const (
 	FlagCaseNum1
 	FlagCaseNum2
 	FlagCaseNum3
+	FlagCaseNum4
 )
 
 var FlagCaseNumUsageMap = map[int]string{
 	FlagCaseNum0: "Hello World !",
 	FlagCaseNum1: "获取环境变量",
 	FlagCaseNum2: "执行命令",
-	FlagCaseNum3: "etcd使用",
+	FlagCaseNum3: "godotenv",
+	FlagCaseNum4: "etcd",
 }
 
 type FlagTypeCaseNum struct {
@@ -68,8 +70,9 @@ func (f *FlagTypeCaseNum) String() string {
 
 func (f *FlagTypeCaseNum) check() {
 	data, ok := f.result()
-	fmt.Println(data)
-	if !ok {
-		panic("param of flag is error")
+	if ok {
+		log.Println(data)
+	} else {
+		log.Panicln(data)
 	}
 }
