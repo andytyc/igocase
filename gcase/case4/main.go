@@ -12,5 +12,6 @@ func Do() {
 	}
 	etcdDefault.load(&EtcdConfig{})
 
-	do_Lease_0()
+	do_lease_0()
+	do_txn_0()
 }

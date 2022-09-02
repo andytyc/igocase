@@ -41,7 +41,8 @@ func do_lease_0() {
 	for {
 		select {
 		case <-subCtx.Done():
-			log.Fatalln("sub ctx Done", subCtx.Err())
+			log.Println("sub ctx Done", subCtx.Err())
+			return
 		case <-ctx.Done():
 			log.Fatalln("ctx Done", ctx.Err())
 		case <-etcdDefault.Client.Ctx().Done():
