@@ -1,0 +1,5 @@
+package gcase
+
+func Do() {
+
+}

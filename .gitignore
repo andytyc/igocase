@@ -1,3 +1,17 @@
+######## 移除"无后缀"的二进制文件 {放在顶部}
+*
+!*.*
+!*/
+
+######## 保留"无后缀"的一些文件
+!LICENSE
+!readme
+!README
+!.gitignore
+!.dockerignore
+!Makefile
+!Dockerfile
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -13,3 +27,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+.idea
+.idea/
+.DS_Store
+# .vscode/
+
+logs/
