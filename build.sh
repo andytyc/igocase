@@ -13,6 +13,8 @@ then
     exit 0
 fi
 
+appname="$1-igocase"
+
 if [ "$1" = "mac" ]
 then
     export GOOS=darwin
@@ -30,16 +32,17 @@ then
     export GOOS=windows
     export GOARCH=amd64
     export CGO_ENABLED=0
+    appname+=".exe"
 fi
 
 go mod tidy
 
 function build_do() {
-    md5sum $1-igocase
-    go build -o $1-igocase -ldflags "-s -w" .
-    md5sum $1-igocase
+    md5sum $appname
+    go build -o $appname -ldflags "-s -w" .
+    md5sum $appname
 }
 
-build_do $1
+build_do
 
 echo "#### build done $1 {$GOOS, $GOARCH} ####"
