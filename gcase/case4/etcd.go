@@ -3,12 +3,11 @@ package case4
 import (
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
-
-var moduleEtcdDefault = newModuleEtcd()
 
 type EtcdConfig struct {
 	Endpoints          []string
@@ -17,16 +16,23 @@ type EtcdConfig struct {
 }
 
 type moduleEtcd struct {
-	identify string
-	Config   *EtcdConfig
-	Client   *clientv3.Client
+	identify        string
+	Config          *EtcdConfig
+	Client          *clientv3.Client
+	ElectionMap     map[string]*EtcdElection
+	lockElectionMap *sync.RWMutex
 }
 
 func newModuleEtcd() *moduleEtcd {
 	return &moduleEtcd{
-		identify: "{etcd}",
+		identify:        "{etcd}",
+		ElectionMap:     make(map[string]*EtcdElection, 0),
+		lockElectionMap: &sync.RWMutex{},
 	}
 }
+
+/* load
+****************************************************************/
 
 func (m *moduleEtcd) load(config *EtcdConfig) (err error) {
 	tagmsg := m.identify + "加载"
@@ -81,3 +87,54 @@ func (m *moduleEtcd) getEtcdClient() (err error) {
 	}
 	return
 }
+
+/* election
+****************************************************************/
+
+func (m *moduleEtcd) OnElection(name, val string) (err error) {
+	var election *EtcdElection
+	election, err = NewElection(name, m.Client)
+	if err != nil {
+		err = fmt.Errorf("NewElection err :%s", err)
+		return
+	}
+	err = election.Campaign(val)
+	if err != nil {
+		err = fmt.Errorf("Campaign err :%s", err)
+		return
+	}
+	m.lockElectionMap.Lock()
+	m.ElectionMap[name] = election
+	m.lockElectionMap.Unlock()
+	return
+}
+
+func (m *moduleEtcd) GetElection(name string) (election *EtcdElection, ok bool) {
+	m.lockElectionMap.RLock()
+	defer m.lockElectionMap.RUnlock()
+	election, ok = m.ElectionMap[name]
+	return
+}
+
+func (m *moduleEtcd) ResignElection(name string, all bool) {
+	m.lockElectionMap.Lock()
+	defer m.lockElectionMap.Unlock()
+	if all {
+		for _, election := range m.ElectionMap {
+			if election != nil {
+				election.Resign()
+			}
+		}
+		m.ElectionMap = make(map[string]*EtcdElection, 0)
+	} else {
+		election, ok := m.ElectionMap[name]
+		if ok && election != nil {
+			election.Resign()
+		}
+		delete(m.ElectionMap, name)
+	}
+	return
+}
+
+/*
+****************************************************************/

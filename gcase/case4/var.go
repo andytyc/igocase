@@ -11,3 +11,5 @@ const (
 
 	EtcdClientTimeout = 30 * time.Second
 )
+
+var etcdDefault = newModuleEtcd()
