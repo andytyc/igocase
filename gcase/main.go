@@ -6,6 +6,7 @@ import (
 	"github.com/andytyc/igocase/gcase/case1"
 	"github.com/andytyc/igocase/gcase/case2"
 	"github.com/andytyc/igocase/gcase/case3"
+	"github.com/andytyc/igocase/gcase/case4"
 )
 
 func Do() {
@@ -18,5 +19,7 @@ func Do() {
 		case2.Do()
 	case conf.FlagCaseNum3:
 		case3.Do()
+	case conf.FlagCaseNum4:
+		case4.Do()
 	}
 }
