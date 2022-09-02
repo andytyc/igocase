@@ -8,12 +8,40 @@ import (
 )
 
 func Do() {
+	// 默认文件名称: .env
 	if err := godotenv.Load(); err != nil {
-		log.Panicln("No .env file found {注意: .env 文件在程序运行目录下}")
+		log.Panicln("No .env file found {注意: 配置文件在程序运行目录下} :", err)
 	}
-	uri := os.Getenv("MONGODB_URI")
-	if uri == "" {
-		log.Panicln("You must set your 'MONGODB_URI' environmental variable. See\n\t https://www.mongodb.com/docs/drivers/go/current/usage-examples/#environment-variable")
+	// 指定一个文件
+	// if err := godotenv.Load(".env-mongodb"); err != nil {
+	// 	log.Panicln("No .env-mongodb file found {注意: 配置文件在程序运行目录下} :", err)
+	// }
+	// 指定多个文件
+	// if err := godotenv.Load(".env-mongodb", ".env-etcd"); err != nil {
+	// 	log.Panicln("No .env-mongodb file found {注意: 配置文件在程序运行目录下} :", err)
+	// }
+
+	MONGODB_URI := os.Getenv("MONGODB_URI")
+	if MONGODB_URI == "" {
+		log.Panicln("You must set your 'MONGODB_URI' environmental variable")
 	}
-	log.Println("MONGODB_URI :", uri)
+	log.Println("MONGODB_URI :", MONGODB_URI)
+
+	Endpoints := os.Getenv("Endpoints")
+	if Endpoints == "" {
+		log.Panicln("You must set your 'Endpoints' environmental variable")
+	}
+	log.Println("Endpoints :", Endpoints)
+
+	UserName := os.Getenv("UserName")
+	if UserName == "" {
+		log.Panicln("You must set your 'UserName' environmental variable")
+	}
+	log.Println("UserName :", UserName)
+
+	Password := os.Getenv("Password")
+	if Password == "" {
+		log.Panicln("You must set your 'Password' environmental variable")
+	}
+	log.Println("Password :", Password)
 }
